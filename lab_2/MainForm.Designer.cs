@@ -29,17 +29,35 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            panelPaint = new Panel();
+            panel_buttons = new Panel();
             SuspendLayout();
+            // 
+            // panelPaint
+            // 
+            resources.ApplyResources(panelPaint, "panelPaint");
+            panelPaint.Name = "panelPaint";
+            panelPaint.MouseClick += panel1_MouseClick;
+            // 
+            // panel_buttons
+            // 
+            resources.ApplyResources(panel_buttons, "panel_buttons");
+            panel_buttons.Name = "panel_buttons";
             // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(panel_buttons);
+            Controls.Add(panelPaint);
             Name = "MainForm";
             Paint += MainForm_Paint;
             ResumeLayout(false);
         }
 
         #endregion
+
+        private Panel panelPaint;
+        private Panel panel_buttons;
     }
 }

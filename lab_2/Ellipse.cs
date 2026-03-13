@@ -1,22 +1,15 @@
 ﻿namespace laba1oop
 {
+    // class for ellipse objects
     internal class Ellipse : Shape
     {
+        // semi-minor axis and semi-major axis 
         public int a, b;
         public Ellipse(int x, int y, int aCoord, int bCoord) : base(x, y)
         {
             a = aCoord;
             b = bCoord;
         }
-        public override void Draw(Graphics g, Pen pen, SolidBrush brush)
-        {
-            pen.Color = Color.Black;
-            //pen.Color = Color.Lavender;
-            brush.Color = Color.Lavender;
-            //base.Draw(g, pen, brush);
-            //Console.WriteLine($"Ellipse({a}, {b})");
-            g.DrawEllipse(pen, CoordX, CoordY, a * 2, b * 2);
-            g.FillEllipse(brush, CoordX, CoordY, a * 2, b * 2); 
-        }
+        
     }
 }

@@ -8,16 +8,18 @@ global using System.Threading.Tasks;
 
 namespace laba1oop
 {
-    internal class Shape
+    // base abstract class for inheritance and overriding
+    internal abstract class Shape
     {
+        // main fields - top-left coordinates
         protected int CoordX;
         protected int CoordY;
-        // конструктор базового класса
+
+        // base class constructor
         public Shape(int x1, int y1)
         {
             CoordX = x1;
             CoordY = y1;
         }
-        public virtual void Draw(Graphics g, Pen pen, SolidBrush brush) { }
     }
 }

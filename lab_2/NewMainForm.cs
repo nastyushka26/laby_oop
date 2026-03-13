@@ -1,13 +1,21 @@
-using Microsoft.VisualBasic; // for input box
+ï»¿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace laba2oop
 {
-    public partial class MainForm : Form
+    public partial class NewMainForm : Form
     {
         private ShapeList shapeList;
         private List<IShapeFactory> factories; // array of all factories
         private IShapeFactory currentFactory;
-        public MainForm()
+        public NewMainForm()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
@@ -47,14 +55,14 @@ namespace laba2oop
         private void CreateButtonsFromFactories()
         {
             int yPos = 10;
-            int buttonHeight = 35;
+            int buttonHeight = 70;
             int buttonWidth = panel_buttons.Width;
 
             for (int i = 0; i < factories.Count; i++)
             {
                 Button btn = new Button();
-                btn.Text = (factories[i] as ShapeBaseFactory)?.ShapeName ?? "Ôèãóðà";
-                btn.Location = new Point(10, yPos);
+                btn.Text = (factories[i] as ShapeBaseFactory)?.ShapeName ?? "Ð¤Ð¸Ð³ÑƒÑ€Ð°";
+                btn.Location = new Point(0, yPos);
                 btn.Size = new Size(buttonWidth, buttonHeight);
                 btn.Tag = factories[i];  // saving reference to factory in button
                 btn.Click += BtnShape_Click; // uploading currentFactory
@@ -69,23 +77,63 @@ namespace laba2oop
             Button clickedBtn = sender as Button;
             currentFactory = clickedBtn.Tag as IShapeFactory;
             currentFactory.Reset(); // reset clicks before
-            // îáíîâëÿåì ñòàòóñ
+            // Ð¾Ð±Ð½Ð¾Ð²Ð»ÑÐµÐ¼ ÑÑ‚Ð°Ñ‚ÑƒÑ
             ShapeBaseFactory baseFactory = currentFactory as ShapeBaseFactory;
-            statusLabel.Text = $"Ðèñóåì {baseFactory?.ShapeName}: \nñäåëàéòå êëèêè...";
+            statusLabel.Text = $"Ð Ð¸ÑÑƒÐµÐ¼ {baseFactory?.ShapeName}: \nÑÐ´ÐµÐ»Ð°Ð¹Ñ‚Ðµ ÐºÐ»Ð¸ÐºÐ¸...";
         }
 
-        private void MainForm_Paint(object sender, PaintEventArgs e)
+        private void panelPaint_Paint(object sender, PaintEventArgs e)
         {
-            //    Graphics graph = e.Graphics;
-            //    Pen pen = new Pen(Color.Black, 5);
-            //    SolidBrush brush = new SolidBrush(Color.White);
-            //    for (int i = 0; i < shapeList.CountShapes; i++)
-            //    {
-            //        shapeList.ArrayShapes[i].Draw(graph, pen, brush);
-            //    }
+            Graphics graph = e.Graphics;
+            Pen pen = new Pen(Color.Black, 2);
+
+            // Ñ€Ð¸ÑÑƒÐµÐ¼ Ð²ÑÐµ Ñ„Ð¸Ð³ÑƒÑ€Ñ‹ Ð¸Ð· ÑÐ¿Ð¸ÑÐºÐ°
+            foreach (var shape in shapeList.ArrayShapes)
+            {
+                if (shape is Circle circle)
+                {
+                    graph.DrawEllipse(pen, circle.CoordX - circle.Rad,
+                                            circle.CoordY - circle.Rad,
+                                            circle.Rad * 2, circle.Rad * 2);
+                }
+                else if (shape is Rectangle rect)
+                {
+                    graph.DrawRectangle(pen, rect.CoordX, rect.CoordY,
+                                              rect.width, rect.height);
+                }
+                else if (shape is Square square)
+                {
+                    graph.DrawRectangle(pen, square.CoordX, square.CoordY,
+                                              square.len, square.len);
+                }
+                else if (shape is Line line)
+                {
+                    graph.DrawLine(pen, line.CoordX, line.CoordY,
+                                           line.x2, line.y2);
+                }
+                else if (shape is Triangle triangle)
+                {
+                    Point[] points = new Point[]
+                    {
+                        new Point(triangle.CoordX, triangle.CoordY),
+                        new Point(triangle.x2, triangle.y2),
+                        new Point(triangle.x3, triangle.y3)
+                    };
+                    graph.DrawPolygon(pen, points);
+                }
+                else if (shape is Ellipse ellipse)
+                {
+                    // coordX and CoordY - coordinates of center
+                    graph.DrawEllipse(pen, ellipse.CoordX - ellipse.a,
+                                            ellipse.CoordY - ellipse.b,
+                                            ellipse.a * 2, ellipse.b * 2);
+                }
+            }
+
+            pen.Dispose();
         }
 
-        private void panel1_MouseClick(object sender, MouseEventArgs e)
+        private void panelPaint_MouseClick(object sender, MouseEventArgs e)
         {
             if (currentFactory != null) // user chose figure to create
             {
@@ -107,12 +155,12 @@ namespace laba2oop
                             // adding it to the list
                             shapeList.Add(newShape);
                             panelPaint.Invalidate();
-                            statusLabel.Text = $"Ôèãóðà ñîçäàíà! \nÂûáåðèòå ñëåäóþùóþ";
+                            statusLabel.Text = $"Ð¤Ð¸Ð³ÑƒÑ€Ð° ÑÐ¾Ð·Ð´Ð°Ð½Ð°! \nÐ’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÐ»ÐµÐ´ÑƒÑŽÑ‰ÑƒÑŽ";
                         }
                     }
                     catch (Exception ex)
                     {
-                        statusLabel.Text = $"Îøèáêà ñîçäàíèÿ: \n{ex.Message}";
+                        statusLabel.Text = $"ÐžÑˆÐ¸Ð±ÐºÐ° ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ñ: \n{ex.Message}";
                     }
                     finally
                     {
@@ -123,16 +171,17 @@ namespace laba2oop
                 else
                 {
                     ShapeBaseFactory baseFactory = currentFactory as ShapeBaseFactory;
-                int clicksLeft = (baseFactory?.need_click_count ?? 2) - (baseFactory?.index_now ?? 1);
-                statusLabel.Text = $"Íóæíî åùå {clicksLeft} êëèêîâ";
-           
+                    int clicksLeft = (baseFactory?.need_click_count ?? 2) - (baseFactory?.index_now ?? 1);
+                    statusLabel.Text = $"ÐÑƒÐ¶Ð½Ð¾ ÐµÑ‰Ðµ {clicksLeft} ÐºÐ»Ð¸ÐºÐ¾Ð²";
+
                 }
             }
             else
             {
-                statusLabel.Text = "Ñíà÷àëà âûáåðèòå ôèãóðó";
+                statusLabel.Text = "Ð¡Ð½Ð°Ñ‡Ð°Ð»Ð° Ð²Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ñ„Ð¸Ð³ÑƒÑ€Ñƒ";
                 return;
             }
+        
         }
     }
 }

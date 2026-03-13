@@ -6,14 +6,14 @@ global using System.Security.Cryptography.X509Certificates;
 global using System.Text;
 global using System.Threading.Tasks;
 
-namespace laba1oop
+namespace laba2oop
 {
     // base abstract class for inheritance and overriding
-    internal abstract class Shape
+    public abstract class Shape
     {
         // main fields - top-left coordinates
-        protected int CoordX;
-        protected int CoordY;
+        public int CoordX;
+        public int CoordY;
 
         // base class constructor
         public Shape(int x1, int y1)

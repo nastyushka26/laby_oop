@@ -1,4 +1,4 @@
-﻿namespace laba1oop
+﻿namespace laba2oop
 {
     // class for line objects
     internal class Line : Shape

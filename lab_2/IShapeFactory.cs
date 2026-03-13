@@ -1,24 +1,23 @@
-﻿using laba1oop;
-using System.Security.Cryptography.Xml;
+﻿using System.Security.Cryptography.Xml;
 using System.Xml.Linq;
-using Rectangle = laba1oop.Rectangle;
+using Rectangle = laba2oop.Rectangle;
 
 namespace laba2oop
 {
     public interface IShapeFactory
     {
         public void GetCoordinates(int x, int y);
-        //public abstract Shape CreateShape();
         public bool IsReady();
         public void Reset();
+        public Shape CreateShape();
     }
 
     public abstract class ShapeBaseFactory : IShapeFactory
     {
         // main fields for all factories
         protected int[,] coordinates;
-        protected int index_now = 0;
-        protected int need_click_count;
+        public int index_now = 0;
+        public int need_click_count;
         public string ShapeName;
 
 

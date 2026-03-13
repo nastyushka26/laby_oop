@@ -1,4 +1,4 @@
-﻿namespace laba1oop
+﻿namespace laba2oop
 {
     // class for rectangle objects
     internal class Rectangle : Shape

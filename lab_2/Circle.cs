@@ -1,4 +1,4 @@
-﻿namespace laba1oop
+﻿namespace laba2oop
 {
     // class for circle objects
     internal class Circle: Shape

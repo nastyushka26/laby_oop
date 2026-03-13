@@ -1,4 +1,4 @@
-﻿namespace laba1oop
+﻿namespace laba2oop
 {
     partial class MainForm
     {
@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             panelPaint = new Panel();
             panel_buttons = new Panel();
+            statusLabel = new Label();
             SuspendLayout();
             // 
             // panelPaint
@@ -44,20 +45,28 @@
             resources.ApplyResources(panel_buttons, "panel_buttons");
             panel_buttons.Name = "panel_buttons";
             // 
+            // statusLabel
+            // 
+            resources.ApplyResources(statusLabel, "statusLabel");
+            statusLabel.Name = "statusLabel";
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(statusLabel);
             Controls.Add(panel_buttons);
             Controls.Add(panelPaint);
             Name = "MainForm";
             Paint += MainForm_Paint;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private Panel panelPaint;
         private Panel panel_buttons;
+        private Label statusLabel;
     }
 }

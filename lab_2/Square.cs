@@ -1,7 +1,7 @@
 ﻿namespace laba2oop
 {
     // class for square objects
-    internal class Square : Shape
+    public class Square : Shape
     {
         // additiaonal field - side length
         public int len;
@@ -9,6 +9,9 @@
         {
             this.len = len;
         }
-        
+        public override void Accept(IShapeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

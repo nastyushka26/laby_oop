@@ -21,5 +21,6 @@ namespace laba2oop
             CoordX = x1;
             CoordY = y1;
         }
+        public abstract void Accept(IShapeVisitor visitor);
     }
 }

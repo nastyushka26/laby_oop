@@ -19,6 +19,8 @@ namespace lab_3
             HeightOfFlight = flightHeight;
         }
 
+        public override void Accept(IVisitor visitor) { }
+
         // method for airVehicle moving - they fly
         public override void Move()
         {
@@ -44,6 +46,11 @@ namespace lab_3
         public override void Move()
         {
             Console.WriteLine($"Самолет летит\n");
+        }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

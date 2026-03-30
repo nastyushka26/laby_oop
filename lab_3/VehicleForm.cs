@@ -153,7 +153,7 @@ namespace lab_3
                     MessageBox.Show("Please select vehicle type!");
                     return;
                 }
-
+//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
                 switch (type)
                 {
                     case "Car":
@@ -230,7 +230,7 @@ namespace lab_3
                 MessageBox.Show($"Error: {ex.Message}");
             }
         }
-
+// AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         private bool ValidateIntFields(params TextBox[] fields)
         {
             foreach (var field in fields)

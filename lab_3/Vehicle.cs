@@ -22,6 +22,7 @@ namespace lab_3
         
         // constructor without parametrs for deserialization
         public Vehicle() { }
+        public abstract void Accept(IVisitor visitor);   // for visitor acception
 
         // constructor to create vehicle object
         public Vehicle(string brand, string color, int productYear, int maxSpeed)

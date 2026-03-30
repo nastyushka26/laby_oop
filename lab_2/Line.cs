@@ -1,7 +1,7 @@
 ﻿namespace laba2oop
 {
     // class for line objects
-    internal class Line : Shape
+    public class Line : Shape
     {
         // additional fields - coordinates of second point
         public int x2, y2;
@@ -10,6 +10,9 @@
             this.x2 = x2;
             this.y2 = y2;
         }
-        
+        public override void Accept(IShapeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

@@ -4,30 +4,35 @@ using Rectangle = laba2oop.Rectangle;
 
 namespace laba2oop
 {
+    // creating interface f or shape factories classes
     public interface IShapeFactory
     {
+        // method for getting coordinates into coordinates array
         public void GetCoordinates(int x, int y);
+        // method for checking if we can create a shape
         public bool IsReady();
+        // method for reseting number of clickes that been already done
         public void Reset();
+        // Creates a shape using the collected coordinates
         public Shape CreateShape();
     }
 
+    // Abstract base class implementing common functionality for all factories
     public abstract class ShapeBaseFactory : IShapeFactory
     {
         // main fields for all factories
         protected int[,] coordinates;
-        public int index_now = 0;
-        public int need_click_count;
+        public int index_now = 0; // clicks already done
+        public int need_click_count; // needed count of clicks
         public string ShapeName;
 
-
-        // method for array initialization
+        // method for coordinates array initialization
         public ShapeBaseFactory(int clicksNeeded)
         {
             need_click_count = clicksNeeded;
             coordinates = new int[clicksNeeded, 2];
         }
-        // method for getting coordinates into array
+        // method for storing mouse click coordinates if more clicks are needed
         public void GetCoordinates(int x, int y)
         {
             if (index_now < need_click_count)
@@ -37,7 +42,7 @@ namespace laba2oop
                 index_now++;
             }
         }
-
+        // Abstract method to be implemented by specific factories
         public abstract Shape CreateShape();
 
         // method for checking if we can create a shape
@@ -45,13 +50,15 @@ namespace laba2oop
         {
             return need_click_count == index_now;
         }
-
+        // method for reseting number of clickes that been already done
         public void Reset()
         {
             index_now = 0;
         }
     }
 
+    // Factory for creating Circle objects
+    // Requires 2 clicks: first for center, second for radius point
     class CircleFactory : ShapeBaseFactory
     {
         // constructor 
@@ -59,6 +66,7 @@ namespace laba2oop
         {
             ShapeName = "Круг";
         }
+        // Creates a circle using two click points
         public override Shape CreateShape()
         {
             int x1 = coordinates[0,0], y1 = coordinates[0,1]; 
@@ -69,6 +77,8 @@ namespace laba2oop
         }
     }
 
+    // Factory for creating Line objects
+    // Requires 2 clicks: start point and end point
     class LineFactory : ShapeBaseFactory
     {
         public LineFactory() : base(2)
@@ -76,6 +86,7 @@ namespace laba2oop
             ShapeName = "Линия";
         }
 
+        // Creates a line from first click to second click
         public override Shape CreateShape()
         {
             int x1 = coordinates[0,0], y1 = coordinates[0,1];
@@ -85,12 +96,15 @@ namespace laba2oop
         }
     }
 
+    // Factory for creating Square objects
+    // Requires 1 click for center, then asks for side length in dialog
     class SquareFactory : ShapeBaseFactory
     {
         public SquareFactory() : base(1)
         {
             ShapeName = "Квадрат";
         }
+        // Creates a square using center click and side length from dialog
         public override Shape CreateShape()
         {
             int x1 = coordinates[0, 0], y1 = coordinates[0, 1];
@@ -102,6 +116,7 @@ namespace laba2oop
             // if iput - valid number
             if (int.TryParse(sideStr, out int side))
             {
+                // Calculate top-left corner from center
                 return new Square(x1 - side / 2, y1 - side / 2, side);
             }
 
@@ -110,6 +125,8 @@ namespace laba2oop
         }
     }
 
+    // Factory for creating Ellipse objects
+    // Requires 1 click for center, then asks for semi-axis length in dialog
     class EllipseFactory : ShapeBaseFactory
     {
         public EllipseFactory() : base(1)

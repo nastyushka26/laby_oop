@@ -4,7 +4,7 @@ namespace lab_3
 {
     // determine landVehicle types for bson serialization
     [BsonKnownTypes(typeof(Car), typeof(Motorcycle), typeof(Bicycle))]
-    
+
     public class LandVehicle : Vehicle
     {
         [BsonElement("WheelCount")]
@@ -25,6 +25,8 @@ namespace lab_3
         {
             Console.WriteLine($"Еду по земле на {WheelsCount} колесах\n");
         }
+
+        public override void Accept(IVisitor visitor) { }
     }
 
     public class Car : LandVehicle
@@ -48,6 +50,10 @@ namespace lab_3
             Console.WriteLine($"Машина едет\n");
         }
 
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 
     public class Motorcycle : LandVehicle
@@ -70,6 +76,11 @@ namespace lab_3
         {
             Console.WriteLine($"Мотоцикл едет\n");
         }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 
     public class Bicycle : LandVehicle
@@ -91,6 +102,11 @@ namespace lab_3
         public override void Move()
         {
             Console.WriteLine($"Велосипед едет\n");
+        }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

@@ -19,6 +19,8 @@ namespace lab_3
             Size = size;
         }
 
+        public override void Accept(IVisitor visitor) { }
+
         // method for land vehicles - they sail
         public override void Move()
         {
@@ -46,6 +48,11 @@ namespace lab_3
         {
             Console.WriteLine("Лодка плывет\n");
         }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 
     public class Liner : WaterVehicle
@@ -67,6 +74,11 @@ namespace lab_3
         public override void Move()
         {
             Console.WriteLine($"Лайнер плывет\n");
+        }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     } 
 }

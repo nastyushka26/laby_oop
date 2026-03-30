@@ -1,7 +1,7 @@
 ﻿namespace laba2oop
 {
     // class for triangle objects
-    internal class Triangle : Shape
+    public class Triangle : Shape
     {
         // additiaonal fields - coordinates of another 2 points
         public int x2, y2, x3, y3;
@@ -11,6 +11,9 @@
             x3 = x_3;
             y3 = y_3;
         }
-        
+        public override void Accept(IShapeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

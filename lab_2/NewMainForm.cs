@@ -12,38 +12,28 @@ namespace laba2oop
 {
     public partial class NewMainForm : Form
     {
-        private ShapeList shapeList;
+        private ShapeList shapeList; // list that will contain figures
         private List<IShapeFactory> factories; // array of all factories
         private IShapeFactory currentFactory;
         public NewMainForm()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
-            //shapeList = new ShapeList();
-            //shapeList.Add(new Rectangle(100, 100, 250, 170));
-            //shapeList.Add(new Triangle(200, 80, 470, 380, 650, 400));
-            //shapeList.Add(new Square(600, 80, 400));
-            //shapeList.Add(new Circle(200, 250, 150));
-            //shapeList.Add(new Ellipse(400, 200, 150, 250));
-            //shapeList.Add(new Line(70, 80, 1200, 410));
-            //shapeList.Add(new Rectangle(300, 400, 100, 200));
-            //shapeList.Add(new Square(500, 400, 300));
-
+            // creating list of shapes
             shapeList = new ShapeList();
             // creating and initializing factories array
             InitializeFactories();
 
             // creating buttons from factories list
             CreateButtonsFromFactories();
-
-
         }
 
+        // method for list of factories initializing 
         private void InitializeFactories()
         {
             factories = new List<IShapeFactory>();
 
-            // adding all factories
+            // adding all factories to the array 
             factories.Add(new CircleFactory());
             factories.Add(new LineFactory());
             factories.Add(new SquareFactory());
@@ -52,8 +42,10 @@ namespace laba2oop
             factories.Add(new RectangleFactory());
         }
 
+        // method for making buttons dynamically for figure creating
         private void CreateButtonsFromFactories()
         {
+            // additional variables for creating buttons
             int yPos = 10;
             int buttonHeight = 70;
             int buttonWidth = panel_buttons.Width;
@@ -72,67 +64,38 @@ namespace laba2oop
             }
         }
 
+        // method to start create figure - button click handler
         private void BtnShape_Click(object sender, EventArgs e)
         {
             Button clickedBtn = sender as Button;
             currentFactory = clickedBtn.Tag as IShapeFactory;
             currentFactory.Reset(); // reset clicks before
-            // обновляем статус
+
+            // updating status
             ShapeBaseFactory baseFactory = currentFactory as ShapeBaseFactory;
             statusLabel.Text = $"Рисуем {baseFactory?.ShapeName}: \nсделайте клики...";
         }
 
+        // method for painting created figures
         private void panelPaint_Paint(object sender, PaintEventArgs e)
         {
-            Graphics graph = e.Graphics;
-            Pen pen = new Pen(Color.Black, 2);
+            if (shapeList.ArrayShapes.Count == 0) return;
 
-            // рисуем все фигуры из списка
-            foreach (var shape in shapeList.ArrayShapes)
+            Graphics graph = e.Graphics;
+            using (Pen pen = new Pen(Color.Black, 2))
             {
-                if (shape is Circle circle)
+                // Создаем посетителя один раз
+                var drawingVisitor = new ShapeDrawingVisitor(graph, pen);
+
+                // Каждая фигура сама вызывает нужный метод Visit
+                foreach (var shape in shapeList.ArrayShapes)
                 {
-                    graph.DrawEllipse(pen, circle.CoordX - circle.Rad,
-                                            circle.CoordY - circle.Rad,
-                                            circle.Rad * 2, circle.Rad * 2);
-                }
-                else if (shape is Rectangle rect)
-                {
-                    graph.DrawRectangle(pen, rect.CoordX, rect.CoordY,
-                                              rect.width, rect.height);
-                }
-                else if (shape is Square square)
-                {
-                    graph.DrawRectangle(pen, square.CoordX, square.CoordY,
-                                              square.len, square.len);
-                }
-                else if (shape is Line line)
-                {
-                    graph.DrawLine(pen, line.CoordX, line.CoordY,
-                                           line.x2, line.y2);
-                }
-                else if (shape is Triangle triangle)
-                {
-                    Point[] points = new Point[]
-                    {
-                        new Point(triangle.CoordX, triangle.CoordY),
-                        new Point(triangle.x2, triangle.y2),
-                        new Point(triangle.x3, triangle.y3)
-                    };
-                    graph.DrawPolygon(pen, points);
-                }
-                else if (shape is Ellipse ellipse)
-                {
-                    // coordX and CoordY - coordinates of center
-                    graph.DrawEllipse(pen, ellipse.CoordX - ellipse.a,
-                                            ellipse.CoordY - ellipse.b,
-                                            ellipse.a * 2, ellipse.b * 2);
+                    shape.Accept(drawingVisitor);
                 }
             }
-
-            pen.Dispose();
         }
 
+        // method to handle mouse clicks to pass coordinates to creating figure methods
         private void panelPaint_MouseClick(object sender, MouseEventArgs e)
         {
             if (currentFactory != null) // user chose figure to create
@@ -140,7 +103,7 @@ namespace laba2oop
                 int x = e.X;
                 int y = e.Y;
 
-                // passing mause coordinates to factory
+                // passing mouse coordinates to factory
                 currentFactory.GetCoordinates(x, y);
 
                 // checking if we can receive new object of current Shape
@@ -158,6 +121,7 @@ namespace laba2oop
                             statusLabel.Text = $"Фигура создана! \nВыберите следующую";
                         }
                     }
+                    // if exception accures
                     catch (Exception ex)
                     {
                         statusLabel.Text = $"Ошибка создания: \n{ex.Message}";
@@ -170,10 +134,10 @@ namespace laba2oop
                 }
                 else
                 {
+                    // updating user hints
                     ShapeBaseFactory baseFactory = currentFactory as ShapeBaseFactory;
                     int clicksLeft = (baseFactory?.need_click_count ?? 2) - (baseFactory?.index_now ?? 1);
                     statusLabel.Text = $"Нужно еще {clicksLeft} кликов";
-
                 }
             }
             else

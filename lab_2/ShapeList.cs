@@ -1,6 +1,6 @@
 ﻿namespace laba2oop
 {
-    internal class ShapeList
+    public class ShapeList
     {
         //public Shape[] ArrayShapes;
         public List<Shape> ArrayShapes;

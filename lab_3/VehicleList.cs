@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace lab_3
 {
+    // class for writing list of objects into BSON file
     public class VehicleList
     {
         [BsonElement("Vehicles")]

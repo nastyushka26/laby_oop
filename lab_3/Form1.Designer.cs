@@ -57,9 +57,9 @@
             panel1.Controls.Add(btnChange);
             panel1.Controls.Add(btnRemove);
             panel1.Controls.Add(btnAdd);
-            panel1.Location = new Point(743, 12);
+            panel1.Location = new Point(741, 12);
             panel1.Name = "panel1";
-            panel1.Size = new Size(256, 494);
+            panel1.Size = new Size(258, 494);
             panel1.TabIndex = 1;
             // 
             // btnLoad

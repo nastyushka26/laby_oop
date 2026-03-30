@@ -14,9 +14,8 @@ namespace lab_3
     public partial class VehicleForm : Form
     {
         private Vehicle vehicle;
-        private TextBox txtWheels, txtDoors, txtHeight, txtMotors;
-        private TextBox txtFloors, txtMaterial;
-        CheckBox chkHandBrakes, chkIsSport;
+        private Dictionary<string, Control> specificControls = new Dictionary<string, Control>();
+        private IVehicleFactory currentFactory;
         public Vehicle Vehicle { get { return vehicle; } }
         public VehicleForm(Vehicle existingVehicle = null)
         {
@@ -42,96 +41,30 @@ namespace lab_3
             }
         }
 
-        private void AddCarControls()
+        private void UpdateSpecificControls()
         {
-            var lblWheels = new Label { Text = "Wheels:", Location = new System.Drawing.Point(10, 10), Width = 100 };
-            txtWheels = new TextBox { Location = new System.Drawing.Point(120, 10), Width = 150 };
-            txtWheels.Text = "4";
+            panelSpecific.Controls.Clear();
+            specificControls.Clear();
 
-            var lblDoors = new Label { Text = "Doors:", Location = new System.Drawing.Point(10, 70), Width = 100 };
-            txtDoors = new TextBox { Location = new System.Drawing.Point(120, 80), Width = 150 };
-            txtDoors.Text = "4";
+            string selectedType = CmbType.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(selectedType)) return;
 
-            panelSpecific.Controls.AddRange(new Control[] { lblWheels, txtWheels, lblDoors, txtDoors });
-        }
+            currentFactory = VehicleFactoryRegistry.GetFactory(selectedType);
+            if (currentFactory == null) return;
 
-        private void AddMotorcycleControls()
-        {
-            var lblWheels = new Label { Text = "Wheels:", Location = new System.Drawing.Point(10, 10), Width = 100 };
-            txtWheels = new TextBox { Location = new System.Drawing.Point(120, 10), Width = 150 };
-            txtWheels.Text = "2";
+            Control[] controls = currentFactory.GetSpecificControls();
 
-            var lblIsSport = new Label { Text = "Sport:", Location = new System.Drawing.Point(10, 70), Width = 100 };
-            chkIsSport = new CheckBox { Location = new System.Drawing.Point(120, 80), Width = 150 };
-
-            panelSpecific.Controls.AddRange(new Control[] { lblWheels, txtWheels, lblIsSport, chkIsSport });
-        }
-
-        private void AddBicycleControls()
-        {
-            var lblWheels = new Label { Text = "Wheels:", Location = new System.Drawing.Point(10, 10), Width = 100 };
-            txtWheels = new TextBox { Location = new System.Drawing.Point(120, 10), Width = 150 };
-            txtWheels.Text = "2";
-
-            var lblHandBrakes = new Label { Text = "Hand brakes:", Location = new System.Drawing.Point(10, 70), Width = 100 };
-            chkHandBrakes = new CheckBox { Location = new System.Drawing.Point(120, 80), Width = 150 };
-
-            panelSpecific.Controls.AddRange(new Control[] { lblWheels, txtWheels, lblHandBrakes, chkHandBrakes });
-        }
-
-        private void AddAirplaneControls()
-        {
-            var lblHeight = new Label { Text = "Flight height:", Location = new System.Drawing.Point(10, 10), Width = 100 };
-            txtHeight = new TextBox { Location = new System.Drawing.Point(120, 10), Width = 150 };
-            txtHeight.Text = "10000";
-
-            var lblMotors = new Label { Text = "Motors:", Location = new System.Drawing.Point(10, 70), Width = 100 };
-            txtMotors = new TextBox { Location = new System.Drawing.Point(120, 80), Width = 150 };
-            txtMotors.Text = "2";
-
-            panelSpecific.Controls.AddRange(new Control[] { lblHeight, txtMotors });
-        }
-
-        private void AddBoatControls()
-        {
-            var lblSize = new Label { Text = "Size:", Location = new Point(10, 10), Width = 100 };
-            var cmbSize = new ComboBox
+            foreach (Control control in controls)
             {
-                Location = new Point(120, 10),
-                Width = 150,
-                Name = "cmbSize",
-                DropDownStyle = ComboBoxStyle.DropDownList
-            };
-            cmbSize.Items.AddRange(new object[] { "small", "medium", "large" });
-            cmbSize.SelectedIndex = 1;
-
-            var lblMaterial = new Label { Text = "Material:", Location = new Point(10, 70), Width = 100 };
-            txtMaterial = new TextBox { Location = new Point(120, 80), Width = 150, Name = "txtMaterial" };
-            txtMaterial.Text = "wood";
-
-            panelSpecific.Controls.AddRange(new Control[] { lblSize, cmbSize, lblMaterial, txtMaterial });
+                panelSpecific.Controls.Add(control);
+                if (!string.IsNullOrEmpty(control.Name))
+                {
+                    specificControls[control.Name] = control;
+                }
+            }
         }
 
-        private void AddLinerControls()
-        {
-            var lblSize = new Label { Text = "Size:", Location = new Point(10, 10), Width = 100 };
-            var cmbSize = new ComboBox
-            {
-                Location = new Point(120, 10),
-                Width = 150,
-                Name = "cmbSize",
-                DropDownStyle = ComboBoxStyle.DropDownList
-            };
-            cmbSize.Items.AddRange(new object[] { "small", "medium", "large" });
-            cmbSize.SelectedIndex = 2;
-
-            var lblFloors = new Label { Text = "Floors:", Location = new Point(10, 70), Width = 100 };
-            txtFloors = new TextBox { Location = new Point(120, 80), Width = 150, Name = "txtFloors" };
-            txtFloors.Text = "10";
-
-            panelSpecific.Controls.AddRange(new Control[] { lblSize, cmbSize, lblFloors, txtFloors });
-        }
-
+        // event handler for button "Save" click
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -146,78 +79,65 @@ namespace lab_3
                     return;
                 }
 
-                // Create vehicle based on type
-                string type = CmbType.SelectedItem?.ToString();
-                if (string.IsNullOrEmpty(type))
+                string selectedType = CmbType.SelectedItem?.ToString();
+                if (string.IsNullOrEmpty(selectedType))
                 {
                     MessageBox.Show("Please select vehicle type!");
                     return;
                 }
-//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-                switch (type)
+
+                currentFactory = VehicleFactoryRegistry.GetFactory(selectedType);
+                if (currentFactory == null)
                 {
-                    case "Car":
-                        if (ValidateIntFields(txtWheels, txtDoors))
-                        {
-                            vehicle = new Car(txtBrand.Text, txtColor.Text, year, maxSpeed,
-                                int.Parse(txtWheels.Text), int.Parse(txtDoors.Text));
-                        }
-                        break;
-
-                    case "Motorcycle":
-                        if (ValidateIntFields(txtWheels))
-                        {
-                            vehicle = new Motorcycle(txtBrand.Text, txtColor.Text, year, maxSpeed,
-                                int.Parse(txtWheels.Text), chkIsSport.Checked);
-                        }
-                        break;
-
-                    case "Bicycle":
-                        if (ValidateIntFields(txtWheels))
-                        {
-                            vehicle = new Bicycle(txtBrand.Text, txtColor.Text, year, maxSpeed,
-                                int.Parse(txtWheels.Text), chkHandBrakes.Checked);
-                        }
-                        break;
-
-                    case "Airplane":
-                        if (ValidateIntFields(txtHeight, txtMotors))
-                        {
-                            vehicle = new Airplane(txtBrand.Text, txtColor.Text, year, maxSpeed,
-                                int.Parse(txtHeight.Text), int.Parse(txtMotors.Text));
-                        }
-                        break;
-
-                    case "Boat":
-                        // Find the size combobox in panelSpecific
-                        ComboBox cmbSize = FindControl<ComboBox>("cmbSize");
-                        if (cmbSize != null && !string.IsNullOrWhiteSpace(txtMaterial.Text))
-                        {
-                            vehicle = new Boat(txtBrand.Text, txtColor.Text, year, maxSpeed,
-                                cmbSize.SelectedItem.ToString(), txtMaterial.Text);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please fill all boat fields!");
-                            return;
-                        }
-                        break;
-
-                    case "Liner":
-                        // Find the size combobox in panelSpecific
-                        ComboBox cmbLinerSize = FindControl<ComboBox>("cmbSize");
-                        if (cmbLinerSize != null && ValidateIntFields(txtFloors))
-                        {
-                            vehicle = new Liner(txtBrand.Text, txtColor.Text, year, maxSpeed,
-                                cmbLinerSize.SelectedItem.ToString(), int.Parse(txtFloors.Text));
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please fill all liner fields!");
-                            return;
-                        }
-                        break;
+                    MessageBox.Show("Unknown vehicle type!");
+                    return;
                 }
+
+                // Build parameters dictionary
+                var parameters = new Dictionary<string, object>
+                {
+                    ["Brand"] = txtBrand.Text,
+                    ["Color"] = txtColor.Text,
+                    ["Year"] = year,
+                    ["MaxSpeed"] = maxSpeed
+                };
+
+                // Extract specific parameters based on control types
+                foreach (var kvp in specificControls)
+                {
+                    Control control = kvp.Value;
+                    string value = null;
+
+                    if (control is TextBox textBox)
+                    {
+                        value = textBox.Text;
+                        if (control.Name.Contains("Wheels") || control.Name.Contains("Height") ||
+                            control.Name.Contains("Motors") || control.Name.Contains("Doors") ||
+                            control.Name.Contains("Floors"))
+                        {
+                            if (!int.TryParse(value, out int intValue))
+                            {
+                                MessageBox.Show($"Please enter valid number in {control.Name}");
+                                return;
+                            }
+                            parameters[control.Name.Replace("txt", "")] = intValue;
+                        }
+                        else
+                        {
+                            parameters[control.Name.Replace("txt", "")] = value;
+                        }
+                    }
+                    else if (control is CheckBox checkBox)
+                    {
+                        parameters[control.Name.Replace("chk", "")] = checkBox.Checked;
+                    }
+                    else if (control is ComboBox comboBox)
+                    {
+                        parameters[control.Name.Replace("cmb", "")] = comboBox.SelectedItem?.ToString();
+                    }
+                }
+
+                vehicle = currentFactory.CreateVehicle(parameters);
 
                 if (vehicle != null)
                 {
@@ -230,19 +150,6 @@ namespace lab_3
                 MessageBox.Show($"Error: {ex.Message}");
             }
         }
-// AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        private bool ValidateIntFields(params TextBox[] fields)
-        {
-            foreach (var field in fields)
-            {
-                if (!int.TryParse(field.Text, out _))
-                {
-                    MessageBox.Show($"Please enter valid number in {field.Name}");
-                    return false;
-                }
-            }
-            return true;
-        }
 
         private void LoadVehicleData()
         {
@@ -254,91 +161,21 @@ namespace lab_3
             txtYear.Text = vehicle.ProductYear.ToString();
             txtMaxSpeed.Text = vehicle.MaxSpeed.ToString();
 
-            // Set type and load specific data
-            if (vehicle is Car car)
+            // Find factory for this vehicle type
+            string typeName = vehicle.GetType().Name;
+            currentFactory = VehicleFactoryRegistry.GetFactory(typeName);
+
+            if (currentFactory != null)
             {
-                CmbType.SelectedItem = "Car";
+                CmbType.SelectedItem = typeName;
                 CmbType_SelectedIndexChanged(null, null);
-                txtWheels.Text = car.WheelsCount.ToString();
-                txtDoors.Text = car.DoorsCount.ToString();
-            }
-            else if (vehicle is Motorcycle motorcycle)
-            {
-                CmbType.SelectedItem = "Motorcycle";
-                CmbType_SelectedIndexChanged(null, null);
-                txtWheels.Text = motorcycle.WheelsCount.ToString();
-                chkIsSport.Checked = motorcycle.isSport;
-            }
-            else if (vehicle is Bicycle bicycle)
-            {
-                CmbType.SelectedItem = "Bicycle";
-                CmbType_SelectedIndexChanged(null, null);
-                txtWheels.Text = bicycle.WheelsCount.ToString();
-                chkHandBrakes.Checked = bicycle.HasHandBrakers;
-            }
-            else if (vehicle is Airplane airplane)
-            {
-                CmbType.SelectedItem = "Airplane";
-                CmbType_SelectedIndexChanged(null, null);
-                txtHeight.Text = airplane.HeightOfFlight.ToString();
-                txtMotors.Text = airplane.MotorsCount.ToString();
-            }
-            else if (vehicle is Boat boat)
-            {
-                CmbType.SelectedItem = "Boat";
-                CmbType_SelectedIndexChanged(null, null);
-                ComboBox cmbSize = FindControl<ComboBox>("cmbSize");
-                if (cmbSize != null) cmbSize.SelectedItem = boat.Size;
-                txtMaterial.Text = boat.Material;
-            }
-            else if (vehicle is Liner liner)
-            {
-                CmbType.SelectedItem = "Liner";
-                CmbType_SelectedIndexChanged(null, null);
-                ComboBox cmbSize = FindControl<ComboBox>("cmbSize");
-                if (cmbSize != null) cmbSize.SelectedItem = liner.Size;
-                txtFloors.Text = liner.FloorsCount.ToString();
+                currentFactory.LoadSpecificData(vehicle, specificControls);
             }
         }
 
         private void CmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            panelSpecific.Controls.Clear();
-
-            if (CmbType.SelectedItem == null) return;
-
-            switch (CmbType.SelectedItem.ToString())
-            {
-                case "Car":
-                    AddCarControls();
-                    break;
-                case "Motorcycle":
-                    AddMotorcycleControls();
-                    break;
-                case "Bicycle":
-                    AddBicycleControls();
-                    break;
-                case "Airplane":
-                    AddAirplaneControls();
-                    break;
-                case "Boat":
-                    AddBoatControls();
-                    break;
-                case "Liner":
-                    AddLinerControls();
-                    break;
-            }
-        }
-
-        // Helper method to find a control in panelSpecific by name
-        private T FindControl<T>(string name) where T : Control
-        {
-            foreach (Control control in panelSpecific.Controls)
-            {
-                if (control.Name == name && control is T)
-                    return (T)control;
-            }
-            return null;
+            UpdateSpecificControls();
         }
     }
 }

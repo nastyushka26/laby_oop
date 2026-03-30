@@ -75,34 +75,6 @@ namespace lab_3
             richTextBox1.AppendText($"Max Speed: {vehicle.MaxSpeed}\n");
 
             // Show specific properties based on vehicle type
-            //switch (vehicle)
-            //{
-            //    case Car car:
-            //        richTextBox1.AppendText($"Doors: {car.DoorsCount}\n");
-            //        richTextBox1.AppendText($"Wheels: {car.WheelsCount}\n");
-            //        break;
-            //    case Motorcycle motorcycle:
-            //        richTextBox1.AppendText($"Sport: {(motorcycle.isSport ? "Yes" : "No")}\n");
-            //        richTextBox1.AppendText($"Wheels: {motorcycle.WheelsCount}\n");
-            //        break;
-            //case Bicycle bicycle:
-            //    richTextBox1.AppendText($"Hand Brakes: {(bicycle.HasHandBrakers ? "Yes" : "No")}\n");
-            //    richTextBox1.AppendText($"Wheels: {bicycle.WheelsCount}\n");
-            //    break;
-            //case Airplane airplane:
-            //    richTextBox1.AppendText($"Flight Height: {airplane.HeightOfFlight}\n");
-            //    richTextBox1.AppendText($"Motors: {airplane.MotorsCount}\n");
-            //    break;
-            //case Boat boat:
-            //    richTextBox1.AppendText($"Size: {boat.Size}\n");
-            //    richTextBox1.AppendText($"Material: {boat.Material}\n");
-            //    break;
-            //case Liner liner:
-            //    richTextBox1.AppendText($"Size: {liner.Size}\n");
-            //    richTextBox1.AppendText($"Floors: {liner.FloorsCount}\n");
-            //    break;
-            //}
-
             // Create visitor that knows about our RichTextBox - for avoiding switch-case - visitor pattern
             var printVisitor = new PrintVehicleDataVisitor(richTextBox1);
 

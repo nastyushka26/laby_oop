@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37012.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab_4", "lab_4.csproj", "{47AAB14A-15BC-435C-8C38-108A8B97EF40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginInterface", "..\PluginInterface\PluginInterface.csproj", "{B23EFFB7-9E20-41DF-A0C4-C964D3029078}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarPlugin", "..\StarPlugin\StarPlugin.csproj", "{ED4AE199-F0AB-423C-A431-FF181A40A5D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PentagonPlugin", "..\PentagonPlugin\PentagonPlugin.csproj", "{813C17B1-C344-46C2-AA15-7E441AB88D28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginSigner", "..\PluginSigner\PluginSigner.csproj", "{340273F2-C6F1-449A-A47F-134798B53996}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaesarCipherPlugin.cs", "..\CaesarCipherPlugin.cs\CaesarCipherPlugin.cs.csproj", "{46E820EC-3080-451D-B3B4-1AD960563BE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AesEncryptionPlugin", "..\AesEncryptionPlugin\AesEncryptionPlugin.csproj", "{8A8EBB99-67A9-45C4-ACD9-79F4D559EC28}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47AAB14A-15BC-435C-8C38-108A8B97EF40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47AAB14A-15BC-435C-8C38-108A8B97EF40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47AAB14A-15BC-435C-8C38-108A8B97EF40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47AAB14A-15BC-435C-8C38-108A8B97EF40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B23EFFB7-9E20-41DF-A0C4-C964D3029078}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B23EFFB7-9E20-41DF-A0C4-C964D3029078}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B23EFFB7-9E20-41DF-A0C4-C964D3029078}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B23EFFB7-9E20-41DF-A0C4-C964D3029078}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED4AE199-F0AB-423C-A431-FF181A40A5D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED4AE199-F0AB-423C-A431-FF181A40A5D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED4AE199-F0AB-423C-A431-FF181A40A5D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED4AE199-F0AB-423C-A431-FF181A40A5D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{813C17B1-C344-46C2-AA15-7E441AB88D28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{813C17B1-C344-46C2-AA15-7E441AB88D28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{813C17B1-C344-46C2-AA15-7E441AB88D28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{813C17B1-C344-46C2-AA15-7E441AB88D28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{340273F2-C6F1-449A-A47F-134798B53996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{340273F2-C6F1-449A-A47F-134798B53996}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{340273F2-C6F1-449A-A47F-134798B53996}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{340273F2-C6F1-449A-A47F-134798B53996}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E820EC-3080-451D-B3B4-1AD960563BE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E820EC-3080-451D-B3B4-1AD960563BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E820EC-3080-451D-B3B4-1AD960563BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E820EC-3080-451D-B3B4-1AD960563BE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A8EBB99-67A9-45C4-ACD9-79F4D559EC28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A8EBB99-67A9-45C4-ACD9-79F4D559EC28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A8EBB99-67A9-45C4-ACD9-79F4D559EC28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A8EBB99-67A9-45C4-ACD9-79F4D559EC28}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3248BAA7-F540-4F28-8BF5-12B683B74C7A}
+	EndGlobalSection
+EndGlobal

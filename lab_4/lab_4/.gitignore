@@ -1,0 +1,25 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+*.user
+
+# Resource files (keep main .resx, ignore localizations)
+*.rex
+*.ru-BY.resx
+*.az.resx
+*.be.resx
+*.uk.resx
+*.*-*.resx
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+[Bb]in/
+[Oo]bj/
+
+# Project-specific
+**/**.exe
+**/**.dll
+**/**.pdb

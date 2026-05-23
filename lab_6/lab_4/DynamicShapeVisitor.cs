@@ -66,9 +66,6 @@ namespace laba2oop
 
 
         // Добавьте этот метод в класс DynamicShapeVisitor:
-        /// <summary>
-        /// Draw heart shape correctly using friend's GetHeartPoints method
-        /// </summary>
         private void DrawHeartCorrectly(object heart)
         {
             try
